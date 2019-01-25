@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using MediatR.Extensions.Caching;
+using MediatR.Extensions.Caching.Serializers;
 using System;
 using System.Collections.Generic;
 
@@ -9,6 +10,7 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddMediatRCaching(this IServiceCollection services)
         {
+            services.AddSingleton<BinarySerializer>();
             services.AddTransient(typeof(CachingPipelineBehavior<,>), typeof(IPipelineBehavior<,>));
             return services;
         }
@@ -20,7 +22,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(cacheEntryOptions));
             }
 
-            services.AddTransient(typeof(CachingPipelineBehavior<,>), typeof(IPipelineBehavior<,>));
+            services.AddMediatRCaching();
             foreach (var cacheEntryOption in cacheEntryOptions)
             {
                 services.AddSingleton(cacheEntryOption.GetType());

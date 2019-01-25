@@ -11,9 +11,9 @@ namespace MediatR.Extensions.Caching
     {
         private readonly ICacheEntryOptions<TRequest> _cachableModelConfig;
         private readonly IDistributedCache _distributedCache;
-        private readonly ISerializer<TResponse> _serializer;
+        private readonly ISerializer _serializer;
 
-        public CachingPipelineBehavior(ICacheEntryOptions<TRequest> cachableModelConfig, IDistributedCache distributedCache, ISerializer<TResponse> serializer)
+        public CachingPipelineBehavior(ICacheEntryOptions<TRequest> cachableModelConfig, IDistributedCache distributedCache, ISerializer serializer)
         {
             _cachableModelConfig = cachableModelConfig;
             _distributedCache = distributedCache;
@@ -42,7 +42,7 @@ namespace MediatR.Extensions.Caching
                 }
                 else
                 {
-                    response = _serializer.Deserialize(cachedData);
+                    response = _serializer.Deserialize<TResponse>(cachedData);
                 }
                 return await new Task<TResponse>(() => response);
             }

@@ -3,7 +3,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace MediatR.Extensions.Caching.Serializers
 {
-    public class BinarySerializer<T> : ISerializer<T> where T : new()
+    public class BinarySerializer : ISerializer
     {
         private readonly BinaryFormatter binaryFormatter;
         public BinarySerializer()
@@ -11,7 +11,7 @@ namespace MediatR.Extensions.Caching.Serializers
             binaryFormatter = new BinaryFormatter();
         }
 
-        public T Deserialize(byte[] source)
+        public T Deserialize<T>(byte[] source)
         {
             using (var memoryStream = new MemoryStream(source))
             {
@@ -19,7 +19,7 @@ namespace MediatR.Extensions.Caching.Serializers
             }
         }
 
-        public byte[] Serialize(T source)
+        public byte[] Serialize<T>(T source)
         {
             using (var memoryStream = new MemoryStream())
             {

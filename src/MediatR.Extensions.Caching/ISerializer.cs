@@ -1,8 +1,8 @@
 ﻿namespace MediatR.Extensions.Caching
 {
-    public interface ISerializer<T> where T : new()
+    public interface ISerializer
     {
-        T Deserialize(byte[] source);
-        byte[] Serialize(T source);
+        T Deserialize<T>(byte[] source);
+        byte[] Serialize<T>(T source);
     }
 }
